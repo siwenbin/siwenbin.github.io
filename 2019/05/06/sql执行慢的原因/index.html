@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://siwenbin.github.io">
-  <title>Tag: github hexo | 司文彬的博客</title>
+  <title>mysql查询慢的原因 | 司文彬的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="司文彬的博客">
-<meta property="og:url" content="https://siwenbin.github.io/tags/github-hexo/index.html">
+  <meta name="description" content="说实话，这个问题可以涉及到 MySQL 的很多核心知识，可以扯出一大堆，就像要考你计算机网络的知识时，问你“输入URL回车之后，究竟发生了什么”一样，看看你能说出多少了。 之前腾讯面试的实话，也问到这个问题了，不过答的很不好，之前没去想过相关原因，导致一时之间扯不出来。所以今天，我带大家来详细扯一下有哪些原因，相信你看完之后一定会有所收获，不然你打我。">
+<meta name="keywords" content="mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql查询慢的原因">
+<meta property="og:url" content="https://siwenbin.github.io/2019/05/06/sql执行慢的原因/index.html">
 <meta property="og:site_name" content="司文彬的博客">
+<meta property="og:description" content="说实话，这个问题可以涉及到 MySQL 的很多核心知识，可以扯出一大堆，就像要考你计算机网络的知识时，问你“输入URL回车之后，究竟发生了什么”一样，看看你能说出多少了。 之前腾讯面试的实话，也问到这个问题了，不过答的很不好，之前没去想过相关原因，导致一时之间扯不出来。所以今天，我带大家来详细扯一下有哪些原因，相信你看完之后一定会有所收获，不然你打我。">
 <meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2019-05-06T02:58:20.247Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="司文彬的博客">
+<meta name="twitter:title" content="mysql查询慢的原因">
+<meta name="twitter:description" content="说实话，这个问题可以涉及到 MySQL 的很多核心知识，可以扯出一大堆，就像要考你计算机网络的知识时，问你“输入URL回车之后，究竟发生了什么”一样，看看你能说出多少了。 之前腾讯面试的实话，也问到这个问题了，不过答的很不好，之前没去想过相关原因，导致一时之间扯不出来。所以今天，我带大家来详细扯一下有哪些原因，相信你看完之后一定会有所收获，不然你打我。">
   
     <link rel="alternative" href="/atom.xml" title="司文彬的博客" type="application/atom+xml">
   
@@ -150,60 +155,227 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-sql执行慢的原因" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/05/05/github-page使用hexo和mweb搭建/" class="archive-article-date">
-  	<time datetime="2019-05-05T09:24:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-05</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/05/github-page使用hexo和mweb搭建/">github page使用hexo和mweb搭建</a>
+    <h1 class="article-title" itemprop="name">
+      mysql查询慢的原因
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2019/05/06/sql执行慢的原因/" class="archive-article-date">
+  	<time datetime="2019-05-06T02:32:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>说实话，这个问题可以涉及到 MySQL 的很多核心知识，可以扯出一大堆，就像要考你计算机网络的知识时，问你“输入URL回车之后，究竟发生了什么”一样，看看你能说出多少了。</p>
+<p>之前腾讯面试的实话，也问到这个问题了，不过答的很不好，之前没去想过相关原因，导致一时之间扯不出来。所以今天，我带大家来详细扯一下有哪些原因，相信你看完之后一定会有所收获，不然你打我。<br><a id="more"></a></p>
+<h1 id="一、开始装逼：分类讨论"><a href="#一、开始装逼：分类讨论" class="headerlink" title="一、开始装逼：分类讨论"></a>一、开始装逼：分类讨论</h1><p>一条 SQL 语句执行的很慢，那是每次执行都很慢呢？还是大多数情况下是正常的，偶尔出现很慢呢？所以我觉得，我们还得分以下两种情况来讨论。</p>
+<p>1、大多数情况是正常的，只是偶尔会出现很慢的情况。</p>
+<p>2、在数据量不变的情况下，这条SQL语句一直以来都执行的很慢。</p>
+<p>针对这两种情况，我们来分析下可能是哪些原因导致的。</p>
+<p>#二、针对偶尔很慢的情况<br>一条 SQL 大多数情况正常，偶尔才能出现很慢的情况，针对这种情况，我觉得这条SQL语句的书写本身是没什么问题的，而是其他原因导致的，那会是什么原因呢？</p>
+<p>1、数据库在刷新脏页我也无奈啊<br>当我们要往数据库插入一条数据、或者要更新一条数据的时候，我们知道数据库会在内存中把对应字段的数据更新了，但是更新之后，这些更新的字段并不会马上同步持久化到磁盘中去，而是把这些更新的记录写入到 <code>redo log</code> 日记中去，等到空闲的时候，在通过 <code>redo log</code> 里的日记把最新的数据同步到磁盘中去。</p>
+<p>不过，<code>redo log</code> 里的容量是有限的，如果数据库一直很忙，更新又很频繁，这个时候 <code>redo log</code> 很快就会被写满了，这个时候就没办法等到空闲的时候再把数据同步到磁盘的，只能暂停其他操作，全身心来把数据同步到磁盘中去的，而这个时候，就会导致我们平时正常的SQL语句突然执行的很慢，所以说，数据库在在同步数据到磁盘的时候，就有可能导致我们的SQL语句执行的很慢了。</p>
+<p>2、拿不到锁我能怎么办<br>这个就比较容易想到了，我们要执行的这条语句，刚好这条语句涉及到的表，别人在用，并且加锁了，我们拿不到锁，只能慢慢等待别人释放锁了。或者，表没有加锁，但要使用到的某个一行被加锁了，这个时候，我也没办法啊。</p>
+<p>如果要判断是否真的在等待锁，我们可以用 show processlist这个命令来查看当前的状态哦，这里我要提醒一下，有些命令最好记录一下，反正，我被问了好几个命令，都不知道怎么写，呵呵。</p>
+<p>下来我们来访分析下第二种情况，我觉得第二种情况的分析才是最重要的</p>
+<h1 id="三、针对一直都这么慢的情况"><a href="#三、针对一直都这么慢的情况" class="headerlink" title="三、针对一直都这么慢的情况"></a>三、针对一直都这么慢的情况</h1><p>如果在数据量一样大的情况下，这条 SQL 语句每次都执行的这么慢，那就就要好好考虑下你的 SQL 书写了，下面我们来分析下哪些原因会导致我们的 SQL 语句执行的很不理想。</p>
+<p>我们先来假设我们有一个表，表里有下面两个字段,分别是主键 id，和两个普通字段 c 和 d。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; CREATE TABLE `t` (</span><br><span class="line">  `id` int(11) NOT NULL,</span><br><span class="line">  `c` int(11) DEFAULT NULL,</span><br><span class="line">  `d` int(11) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB;</span><br></pre></td></tr></table></figure></p>
+<p>1、扎心了，没用到索引<br>没有用上索引，我觉得这个原因是很多人都能想到的，例如你要查询这条语句<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from t where 100 &lt;c and c &lt; 100000;</span><br></pre></td></tr></table></figure></p>
+<p>（1）、字段没有索引</p>
+<p>刚好你的 c 字段上没有索引，那么抱歉，只能走全表扫描了，你就体验不会索引带来的乐趣了，所以，这回导致这条查询语句很慢。</p>
+<p>（2）、字段有索引，但却没有用索引</p>
+<p>好吧，这个时候你给 c 这个字段加上了索引，然后又查询了一条语句<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from t where c - 1 = 1000;</span><br></pre></td></tr></table></figure></p>
+<p>我想问大家一个问题，这样子在查询的时候会用索引查询吗？</p>
+<p>答是不会，如果我们在字段的左边做了运算，那么很抱歉，在查询的时候，就不会用上索引了，所以呢，大家要注意这种字段上有索引，但由于自己的疏忽，导致系统没有使用索引的情况了。</p>
+<p>正确的查询应该如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from t where c = 1000 + 1;</span><br></pre></td></tr></table></figure></p>
+<p>有人可能会说，右边有运算就能用上索引？难道数据库就不会自动帮我们优化一下，自动把 c - 1=1000 自动转换为 c = 1000+1。</p>
+<p>不好意思，确实不会帮你，所以，你要注意了。</p>
+<p>（3）、函数操作导致没有用上索引</p>
+<p>如果我们在查询的时候，对字段进行了函数操作，也是会导致没有用上索引的，例如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from t where pow(c,2) = 1000;</span><br></pre></td></tr></table></figure></p>
+<p>这里我只是做一个例子，假设函数 pow 是求 c 的 n 次方，实际上可能并没有 pow(c,2)这个函数。其实这个和上面在左边做运算也是很类似的。</p>
+<p>所以呢，一条语句执行都很慢的时候，可能是该语句没有用上索引了，不过具体是啥原因导致没有用上索引的呢，你就要会分析了，我上面列举的三个原因，应该是出现的比较多的吧。</p>
+<p>2、呵呵，数据库自己选错索引了<br>我们在进行查询操作的时候，例如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from t where 100 &lt; c and c &lt; 100000;</span><br></pre></td></tr></table></figure></p>
+<p>我们知道，主键索引和非主键索引是有区别的，主键索引存放的值是整行字段的数据，而非主键索引上存放的值不是整行字段的数据，而且存放主键字段的值。不大懂的可以看我这篇文章：面试小知识：MySQL索引相关    里面有说到主键索引和非主键索引的区别</p>
+<p>也就是说，我们如果走 c 这个字段的索引的话，最后会查询到对应主键的值，然后，再根据主键的值走主键索引，查询到整行数据返回。</p>
+<p>好吧扯了这么多，其实我就是想告诉你，就算你在 c 字段上有索引，系统也并不一定会走 c 这个字段上的索引，而是有可能会直接扫描扫描全表，找出所有符合 100 &lt; c and c &lt; 100000 的数据。</p>
+<p>为什么会这样呢？</p>
+<p>其实是这样的，系统在执行这条语句的时候，会进行预测：究竟是走 c 索引扫描的行数少，还是直接扫描全表扫描的行数少呢？显然，扫描行数越少当然越好了，因为扫描行数越少，意味着I/O操作的次数越少。</p>
+<p>如果是扫描全表的话，那么扫描的次数就是这个表的总行数了，假设为 n；而如果走索引 c 的话，我们通过索引 c 找到主键之后，还得再通过主键索引来找我们整行的数据，也就是说，需要走两次索引。而且，我们也不知道符合 100 c &lt; and c &lt; 10000 这个条件的数据有多少行，万一这个表是全部数据都符合呢？这个时候意味着，走 c 索引不仅扫描的行数是 n，同时还得每行数据走两次索引。</p>
+<p>所以呢，系统是有可能走全表扫描而不走索引的。那系统是怎么判断呢？</p>
+<p>判断来源于系统的预测，也就是说，如果要走 c 字段索引的话，系统会预测走 c 字段索引大概需要扫描多少行。如果预测到要扫描的行数很多，它可能就不走索引而直接扫描全表了。</p>
+<p>那么问题来了，系统是怎么预测判断的呢？这里我给你讲下系统是怎么判断的吧，虽然这个时候我已经写到脖子有点酸了。</p>
+<p>系统是通过索引的区分度来判断的，一个索引上不同的值越多，意味着出现相同数值的索引越少，意味着索引的区分度越高。我们也把区分度称之为基数，即区分度越高，基数越大。所以呢，基数越大，意味着符合 100 &lt; c and c &lt; 10000 这个条件的行数越少。</p>
+<p>所以呢，一个索引的基数越大，意味着走索引查询越有优势。</p>
+<p>那么问题来了，怎么知道这个索引的基数呢？</p>
+<p>系统当然是不会遍历全部来获得一个索引的基数的，代价太大了，索引系统是通过遍历部分数据，也就是通过采样的方式，来预测索引的基数的。</p>
+<p>扯了这么多，重点的来了，居然是采样，那就有可能出现失误的情况，也就是说，c 这个索引的基数实际上是很大的，但是采样的时候，却很不幸，把这个索引的基数预测成很小。例如你采样的那一部分数据刚好基数很小，然后就误以为索引的基数很小。然后就呵呵，系统就不走 c 索引了，直接走全部扫描了。</p>
+<p>所以呢，说了这么多，得出结论：由于统计的失误，导致系统没有走索引，而是走了全表扫描，而这，也是导致我们 SQL 语句执行的很慢的原因。</p>
+<p>这里我声明一下，系统判断是否走索引，扫描行数的预测其实只是原因之一，这条查询语句是否需要使用使用临时表、是否需要排序等也是会影响系统的选择的。</p>
+<p>不过呢，我们有时候也可以通过强制走索引的方式来查询，例如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from t force index(a) where c &lt; 100 and c &lt; 100000;</span><br></pre></td></tr></table></figure></p>
+<p>我们也可以通过<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show index from t;</span><br></pre></td></tr></table></figure></p>
+<p>来查询索引的基数和实际是否符合，如果和实际很不符合的话，我们可以重新来统计索引的基数，可以用这条命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">analyze table t;</span><br></pre></td></tr></table></figure></p>
+<p>来重新统计分析。</p>
+<p>既然会预测错索引的基数，这也意味着，当我们的查询语句有多个索引的时候，系统有可能也会选错索引哦，这也可能是 SQL 执行的很慢的一个原因。</p>
+<p>好吧，就先扯这么多了，你到时候能扯出这么多，我觉得已经很棒了，下面做一个总结。</p>
+<p>四、总结</p>
+<p>以上是我的总结与理解，最后一个部分，我怕很多人不大懂数据库居然会选错索引，所以我详细解释了一下，下面我对以上做一个总结。</p>
+<p>一个 SQL 执行的很慢，我们要分两种情况讨论：</p>
+<p>1、大多数情况下很正常，偶尔很慢，则有如下原因</p>
+<p>(1)、数据库在刷新脏页，例如 redo log 写满了需要同步到磁盘。</p>
+<p>(2)、执行的时候，遇到锁，如表锁、行锁。</p>
+<p>2、这条 SQL 语句一直执行的很慢，则有如下原因。</p>
+<p>(1)、没有用上索引：例如该字段没有索引；由于对字段进行运算、函数操作导致无法用索引。</p>
+<p>(2)、数据库选错了索引。</p>
+<p>本文章转自<br><a href="https://mp.weixin.qq.com/s/1paGaxINJcd5Wic0CMyLTQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/1paGaxINJcd5Wic0CMyLTQ</a></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">github hexo</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://siwenbin.github.io/2019/05/06/sql执行慢的原因/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2019/05/05/旺旺日常/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">旺旺的日常</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -226,9 +398,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
