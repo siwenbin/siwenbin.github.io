@@ -6,20 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://siwenbin.github.io">
-  <title>github page使用hexo和mweb搭建 | 司文彬的博客</title>
+  <title>深入理解java虚拟机01 | 司文彬的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="第一次尝试使用github pages搭建博客，下面写了一下自己的一些尝试。">
-<meta name="keywords" content="github hexo">
+  <meta name="description" content="为什么 Java 要在虚拟机里运行？java作为高级语音直接在硬件上直接执行不现实。需要虚拟机把java语言转化成java字节码（class文件）。java虚拟机可以由硬件实现，也可以使用软件（比较常用，例如：SRE）。">
+<meta name="keywords" content="jvm">
 <meta property="og:type" content="article">
-<meta property="og:title" content="github page使用hexo和mweb搭建">
-<meta property="og:url" content="https://siwenbin.github.io/2019/05/05/github-page使用hexo和mweb搭建/index.html">
+<meta property="og:title" content="深入理解java虚拟机01">
+<meta property="og:url" content="https://siwenbin.github.io/2019/05/06/深入理解java虚拟机学习01/index.html">
 <meta property="og:site_name" content="司文彬的博客">
-<meta property="og:description" content="第一次尝试使用github pages搭建博客，下面写了一下自己的一些尝试。">
+<meta property="og:description" content="为什么 Java 要在虚拟机里运行？java作为高级语音直接在硬件上直接执行不现实。需要虚拟机把java语言转化成java字节码（class文件）。java虚拟机可以由硬件实现，也可以使用软件（比较常用，例如：SRE）。">
 <meta property="og:locale" content="zh">
-<meta property="og:updated_time" content="2019-05-06T03:02:11.373Z">
+<meta property="og:image" content="https://siwenbin.github.io/img/blog/java%E5%AD%97%E8%8A%82%E7%A0%81%E5%8A%A0%E8%BD%BD%E5%88%B0%E5%86%85%E5%AD%98.png">
+<meta property="og:image" content="https://siwenbin.github.io/img/blog/java%E7%BC%96%E8%AF%91%E5%99%A8.png">
+<meta property="og:updated_time" content="2019-05-21T08:34:20.085Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="github page使用hexo和mweb搭建">
-<meta name="twitter:description" content="第一次尝试使用github pages搭建博客，下面写了一下自己的一些尝试。">
+<meta name="twitter:title" content="深入理解java虚拟机01">
+<meta name="twitter:description" content="为什么 Java 要在虚拟机里运行？java作为高级语音直接在硬件上直接执行不现实。需要虚拟机把java语言转化成java字节码（class文件）。java虚拟机可以由硬件实现，也可以使用软件（比较常用，例如：SRE）。">
+<meta name="twitter:image" content="https://siwenbin.github.io/img/blog/java%E5%AD%97%E8%8A%82%E7%A0%81%E5%8A%A0%E8%BD%BD%E5%88%B0%E5%86%85%E5%AD%98.png">
   
     <link rel="alternative" href="/atom.xml" title="司文彬的博客" type="application/atom+xml">
   
@@ -155,41 +158,31 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-github-page使用hexo和mweb搭建" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-深入理解java虚拟机学习01" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      github page使用hexo和mweb搭建
+      深入理解java虚拟机01
     </h1>
   
 
         
-        <a href="/2019/05/05/github-page使用hexo和mweb搭建/" class="archive-article-date">
-  	<time datetime="2019-05-05T09:24:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-05</time>
+        <a href="/2019/05/06/深入理解java虚拟机学习01/" class="archive-article-date">
+  	<time datetime="2019-05-06T02:32:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-06</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>第一次尝试使用github pages搭建博客，下面写了一下自己的一些尝试。<br><a id="more"></a></p>
-<h1 id="使用的主题"><a href="#使用的主题" class="headerlink" title="使用的主题"></a>使用的主题</h1><blockquote>
-<p><a href="https://github.com/litten/hexo-theme-yilia" target="_blank" rel="noopener">https://github.com/litten/hexo-theme-yilia</a></p>
+        <h1 id="为什么-Java-要在虚拟机里运行？"><a href="#为什么-Java-要在虚拟机里运行？" class="headerlink" title="为什么 Java 要在虚拟机里运行？"></a>为什么 Java 要在虚拟机里运行？</h1><p>java作为高级语音直接在硬件上直接执行不现实。需要虚拟机把java语言转化成java字节码（class文件）。<br>java虚拟机可以由<a href="https://en.wikipedia.org/wiki/Java_processor" target="_blank" rel="noopener">硬件实现</a>，也可以使用软件（比较常用，例如：SRE）。<br><a id="more"></a></p>
+<h1 id="java虚拟机如何运行java字节码"><a href="#java虚拟机如何运行java字节码" class="headerlink" title="java虚拟机如何运行java字节码"></a>java虚拟机如何运行java字节码</h1><p>把编译好的class文件加载到方法区。每个线程会有自己的pc寄存器、java方法区、native方法区。<br><img src="/img/blog/java%E5%AD%97%E8%8A%82%E7%A0%81%E5%8A%A0%E8%BD%BD%E5%88%B0%E5%86%85%E5%AD%98.png" alt="java字节码加载到内存"><br>字节码是不可能直接执行的，需要通过编译成机器码才可以执行。有两个编译方式：解释编译和JIT编译的方式来执行。<br><img src="/img/blog/java%E7%BC%96%E8%AF%91%E5%99%A8.png" alt="java编译器"></p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><blockquote>
+<p><a href="https://time.geekbang.org/column/article/11289" target="_blank" rel="noopener">https://time.geekbang.org/column/article/11289</a></p>
 </blockquote>
-<h1 id="参考的网址"><a href="#参考的网址" class="headerlink" title="参考的网址"></a>参考的网址</h1><blockquote>
-<p><a href="http://www.cnblogs.com/liuxianan/p/build-blog-website-by-hexo-github.html" target="_blank" rel="noopener">http://www.cnblogs.com/liuxianan/p/build-blog-website-by-hexo-github.html</a></p>
-</blockquote>
-<h1 id="markdown的语法"><a href="#markdown的语法" class="headerlink" title="markdown的语法"></a>markdown的语法</h1><blockquote>
-<p><a href="https://www.jianshu.com/p/191d1e21f7ed" target="_blank" rel="noopener">https://www.jianshu.com/p/191d1e21f7ed</a><br><a href="http://www.markdown.cn/#overview" target="_blank" rel="noopener">http://www.markdown.cn/#overview</a></p>
-</blockquote>
-<h1 id="图片上传问题的解决"><a href="#图片上传问题的解决" class="headerlink" title="图片上传问题的解决"></a>图片上传问题的解决</h1><p><a href="https://peapon.github.io/2017/10/22/%E4%BD%BF%E7%94%A8GitHub-Pages%E5%88%9B%E5%BB%BA%E5%8D%9A%E5%AE%A2%E5%92%8C%E5%9B%BE%E7%89%87%E4%B8%8A%E4%BC%A0%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" target="_blank" rel="noopener">https://peapon.github.io/2017/10/22/%E4%BD%BF%E7%94%A8GitHub-Pages%E5%88%9B%E5%BB%BA%E5%8D%9A%E5%AE%A2%E5%92%8C%E5%9B%BE%E7%89%87%E4%B8%8A%E4%BC%A0%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</a></p>
-<h1 id="mweb下载后不能安装问题解决"><a href="#mweb下载后不能安装问题解决" class="headerlink" title="mweb下载后不能安装问题解决"></a>mweb下载后不能安装问题解决</h1><blockquote>
-<p>提示’软件缺失’<br>sudo spctl –master-disable</p>
-</blockquote>
-<h1 id="使用技巧"><a href="#使用技巧" class="headerlink" title="使用技巧"></a>使用技巧</h1><p>excerpt_link 没有截断的时候在想要截断的地方写上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- more --&gt;</span><br></pre></td></tr></table></figure></p>
 
       
 
@@ -224,7 +217,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">github hexo</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">jvm</a>
         		</li>
       		
 		</ul>
@@ -280,7 +273,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://siwenbin.github.io/2019/05/05/github-page使用hexo和mweb搭建/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://siwenbin.github.io/2019/05/06/深入理解java虚拟机学习01/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -294,15 +287,20 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/05/05/旺旺日常/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/05/06/sql执行慢的原因/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          旺旺的日常
+          mysql查询慢的原因
         
       </div>
     </a>
   
+  
+    <a href="/2019/05/05/旺旺日常/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">旺旺的日常</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
 </nav>
 
